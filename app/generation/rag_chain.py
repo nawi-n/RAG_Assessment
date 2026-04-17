@@ -32,30 +32,42 @@ class RAGChain:
         # STEP 4: STRONG TABLE PROMPT 🔥
         # =========================
         prompt = f"""
-You are a financial data extraction assistant.
+        You are a senior financial analyst specializing in mining company annual reports.
 
-Task:
-Extract the COMPLETE capital expenditure breakdown table for the given mine.
+        Task:
+        Extract CAPITAL EXPENDITURE (CAPEX) information for the specified mine using ONLY the provided context.
 
-Instructions:
-- Return the FULL table (all rows and columns)
-- Preserve structure (row names, values, units)
-- If multiple tables exist, choose the one related to the mine
-- Do NOT summarize
-- Do NOT skip rows
-- If table not found, say: "Table not found"
+        IMPORTANT UNDERSTANDING:
+        CAPEX may NOT be explicitly written as "CAPEX". It may appear as:
+        - Capital expenditure
+        - Capital spending
+        - Investment in property, plant and equipment (PP&E)
+        - Cash used in investing activities
+        - Sustaining or growth capital investments
 
-Output Format (STRICT):
-Return as a clean markdown table.
+        Rules:
+        1. Use ONLY the provided context. Do NOT use external knowledge.
+        2. Do NOT assume or hallucinate missing values.
+        3. CAPEX may appear in tables OR narrative text — both are valid.
+        4. If multiple CAPEX-related values exist, include all of them clearly.
+        5. If data is split across chunks, combine only if explicitly supported by context.
+        6. If no CAPEX-related information is found, say: "CAPEX information not found in the provided context."
 
-Context:
-{context}
+        Output Format:
+        - If a table exists → present it as a clean markdown table
+        - If only text exists → summarize clearly in bullet points
+        - If both exist → show both (table first, then explanation)
+        - Keep numbers exactly as in the context
+        - Do not add interpretations beyond the data
 
-Question:
-{query}
+        Context:
+        {context}
 
-Answer:
-"""
+        Question:
+        {query}
+
+        Answer:
+        """
 
         response = self.llm.invoke(prompt)
 

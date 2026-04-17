@@ -1,2 +1,2 @@
-![Alt text](output_sample/Screenshot 2026-04-17 165302.png)
-![Alt text](output_sample/Screenshot 2026-04-17 165319.png)
+![Alt text](output_sample/terminal_output.png)
+![Alt text](output_sample/original_output.png)
